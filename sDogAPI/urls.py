@@ -24,11 +24,11 @@ from django.conf import settings
 class DogSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Dog
-        fields = (
+        fields = [
             'dog_name',
             'photo',
             'owner_name'
-        )
+        ]
 
 
 class DogViewSet(viewsets.ModelViewSet):
