@@ -36,6 +36,7 @@ INSTALLED_APPS = [
     # My apps
     'sDogAPIApp',
     'rest_framework',
+    'storages',
 
     # Django Apps
     'django.contrib.admin',
@@ -80,24 +81,24 @@ WSGI_APPLICATION = 'sDogAPI.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': BASE_DIR / 'db.sqlite3',
-#     }
-# }
-
-# Here we are borrowing our profileAPI database
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'HOST': os.getenv('PROFILE_API_PSQL_HOST'),
-        'PORT': 5432,
-        'PASSWORD': os.getenv('PROFILE_API_PSQL_PASSWORD'),
-        'NAME': os.getenv('PROFILE_API_PSQL_NAME'),
-        'USER': os.getenv('PROFILE_API_PSQL_NAME'),
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
+
+# Here we are borrowing our profileAPI database
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'HOST': os.getenv('PROFILE_API_PSQL_HOST'),
+#         'PORT': 5432,
+#         'PASSWORD': os.getenv('PROFILE_API_PSQL_PASSWORD'),
+#         'NAME': os.getenv('PROFILE_API_PSQL_NAME'),
+#         'USER': os.getenv('PROFILE_API_PSQL_NAME'),
+#     }
+# }
 
 # Password validation
 # https://docs.djangoproject.com/en/4.0/ref/settings/#auth-password-validators
@@ -133,8 +134,6 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.0/howto/static-files/
 
-STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles_build', 'static')
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'sDogAPIApp/media/')    # Direct to where you want your media files to go
 
@@ -154,14 +153,29 @@ REST_FRAMEWORK = {
 # AWS config
 DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
 STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
-AWS_DEFAULT_ACL = None
+AWS_DEFAULT_ACL = 'public-read'
 AWS_S3_FILE_OVERWRITE = False
 
-AWS_S3_ACCESS_KEY_ID = os.getenv('POWER_PET_PRO_S3_2_ACCESS_KEY')
-AWS_S3_SECRET_ACCESS_KEY = os.getenv('POWER_PET_PRO_S3_2_SECRET_ACCESS_KEY')
-AWS_STORAGE_BUCKET_NAME = 'dog-api'
+AWS_S3_ACCESS_KEY_ID = os.getenv('SDOGAPI_AWS_ACCESS_KEY')
+AWS_S3_SECRET_ACCESS_KEY = os.getenv('SDOGAPI_AWS_SECRET_ACCESS_KEY')
+AWS_STORAGE_BUCKET_NAME = os.getenv('SDOGAPI_AWS_BUCKET_NAME')
 
 AWS_S3_SIGNATURE_VERSION = 's3v4'
-AWS_S3_REGION_NAME = 'us-east-2'
+AWS_S3_REGION_NAME = os.getenv('SDOGAPI_REGION_NAME')
+AWS_S3_OBJECT_PARAMETERS = {
+    'CacheControl': 'max-age=86400'
+}
+AWS_S3_CUSTOM_DOMAIN =  '%s.s3.amazonaws.com' % AWS_STORAGE_BUCKET_NAME
+AWS_LOCATION = 'static'
+
+STATIC_URL = 'https://%s/%s' %  (AWS_S3_CUSTOM_DOMAIN, AWS_LOCATION)
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles_build', 'static')
+STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
+
+AWS_QUERYSTRING_AUTH = False
+AWS_HEADERS = {
+    'Access-Control-Allow-Origin': '*'
+}
+
 
 django_heroku.settings(locals())
