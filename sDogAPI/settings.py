@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-zq!x=e4l$z1on_69#rxs1d)c_jzv@l*w2&vc#-l9ar2p5#qax#
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ['*', '.vercel.app']
 
 
 # Application definition
@@ -133,6 +133,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.0/howto/static-files/
 
 STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles_build', 'static')
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'sDogAPIApp/media/')    # Direct to where you want your media files to go
 
