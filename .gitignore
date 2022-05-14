@@ -3,3 +3,6 @@ venv
 sDogAPI/__pycache__/
 sDogAPIApp/__pycache__/
 sDogAPIApp/media/
+.vercel
+package-lock.json
+node_modules
