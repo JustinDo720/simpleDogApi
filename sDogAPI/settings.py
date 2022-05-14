@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 
 from pathlib import Path
 import os
+import django_heroku
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -26,7 +27,7 @@ SECRET_KEY = 'django-insecure-zq!x=e4l$z1on_69#rxs1d)c_jzv@l*w2&vc#-l9ar2p5#qax#
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['*', '.vercel.app']
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -160,3 +161,5 @@ AWS_S3_SECRET_ACCESS_KEY = os.getenv('POWER_PET_PRO_S3_2_SECRET_ACCESS_KEY')
 AWS_STORAGE_BUCKET_NAME = 'profile-api'
 
 AWS_S3_REGION_NAME = 'us-east-1'
+
+django_heroku.settings(locals())
