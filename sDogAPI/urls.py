@@ -17,6 +17,8 @@ from django.contrib import admin
 from django.urls import path, include
 from rest_framework import routers, serializers, viewsets
 from sDogAPIApp.models import Dog
+from django.conf.urls.static import static
+from django.conf import settings
 
 
 class DogSerializer(serializers.HyperlinkedModelSerializer):
@@ -37,4 +39,4 @@ urlpatterns = [
     path('', include('sDogAPIApp.urls')),
     path('', include(router.urls)),
     path('api-auth/', include('rest_framework.urls'))
-]
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)   # You need to make sure you have this to see photos
