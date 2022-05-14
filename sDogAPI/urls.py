@@ -15,9 +15,28 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from rest_framework import routers, serializers, viewsets
+from sDogAPIApp.models import Dog
+from django.conf.urls.static import static
+from django.conf import settings
 
+
+class DogSerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = Dog
+        fields = '__all__'
+
+
+class DogViewSet(viewsets.ModelViewSet):
+    queryset = Dog.objects.all()
+    serializer_class = DogSerializer
+
+router = routers.DefaultRouter()
+router.register('dogs', DogViewSet)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('sDogAPIApp.urls')),
-]
+    path('', include(router.urls)),
+    path('api-auth/', include('rest_framework.urls'))
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)   # You need to make sure you have this to see photos
