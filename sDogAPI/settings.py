@@ -25,12 +25,16 @@ SECRET_KEY = 'django-insecure-zq!x=e4l$z1on_69#rxs1d)c_jzv@l*w2&vc#-l9ar2p5#qax#
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
 
 INSTALLED_APPS = [
+    # My apps
+    'sDogAPIApp',
+
+    # Django Apps
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
