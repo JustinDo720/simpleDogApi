@@ -1,1 +1,1 @@
-Web: gunicorn sDogAPI.wsgi --log-file -
+web: gunicorn sDogAPI.wsgi --log-file -
